@@ -27,5 +27,15 @@
             app:launchSingleTop="true"
             app:popUpTo="@+id/main_activity_nav_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_newsFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment">
+
+        </action>
     </fragment>
+    <fragment
+        android:id="@+id/articleDetailFragment"
+        android:name="com.shahjad.fabhotels.ui.articledetail.ArticleDetailFragment"
+        android:label="fragment_article_detail"
+        tools:layout="@layout/fragment_article_detail" />
 </navigation>

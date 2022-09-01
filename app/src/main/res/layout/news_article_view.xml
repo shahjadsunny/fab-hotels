@@ -23,7 +23,9 @@
         <variable
             name="article"
             type="com.shahjad.fabhotels.data.models.news.Article" />
-
+        <variable
+            name="position"
+            type="int"/>
         <variable
             name="viewmodel"
             type="com.shahjad.fabhotels.ui.dashboard.NewsViewModel" />
@@ -51,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:onClick="@{() -> viewmodel.openArticleDetail(article.title)}">
+                android:onClick="@{() -> viewmodel.openArticleDetail(article,position)}">
 
                 <ImageView
                     android:id="@+id/complete_checkbox"
@@ -62,7 +64,14 @@
                     android:load_image="@{article.urlToImage}"
                     android:layout_gravity="center_vertical"
                     />
-
+                <ImageView
+                    android:padding="5dp"
+                    android:src="@drawable/like"
+                    android:set_like="@{article.like}"
+                    android:id="@+id/like_unlike"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="@{() -> viewmodel.onLike(position)}"/>
                 <TextView
                     android:id="@+id/title_text"
                     android:layout_width="match_parent"
@@ -71,6 +80,7 @@
                     android:layout_marginStart="5dp"
                     android:textSize="14sp"
                     android:textStyle="bold"
+
                     android:text="@{article.title}"
                     />
             </LinearLayout>

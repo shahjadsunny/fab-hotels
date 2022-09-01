@@ -6,6 +6,9 @@
         <variable
             name="viewmodel"
             type="com.shahjad.fabhotels.ui.dashboard.NewsViewModel" />
+<!--        <variable-->
+<!--            name="newsAdaptor"-->
+<!--            type="com.shahjad.fabhotels.adaptors.NewsAdaptor" />-->
         <import type="android.view.View"/>
         <import type="androidx.core.content.ContextCompat" />
 

@@ -1,6 +1,7 @@
 package com.shahjad.fabhotels.ui.dashboard
 
 import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,15 +20,25 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository,private val appSharedPreference: AppSharedPreference) : ViewModel() {
 
-    private val _success = MutableLiveData<Event<NewsModel?>>()
-    val success : LiveData<Event<NewsModel?>> = _success
-
+    //error msg
     private val _msg = MutableLiveData<String>()
     val msg : LiveData<String> = _msg
+
+    //progress bar
     private val _progressBar = MutableLiveData<Int>()
     val progressBar : LiveData<Int> = _progressBar
+
+    // news list
     private val _articles = MutableLiveData<List<Article>> ()
     val articles: LiveData<List<Article>> = _articles
+    // news list
+    private val _position = MutableLiveData<Event<Int>> ()
+    val position: LiveData<Event<Int>> = _position
+
+    //open news details
+    private val  _openArticleEvent = MutableLiveData<Event<Article>>()
+    val openArticleEvent: LiveData<Event<Article>> = _openArticleEvent
+
     init {
         getNews()
     }
@@ -55,7 +66,16 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
             }
         }
     }
-    fun openArticleDetail(artice:String){
-
+    fun openArticleDetail(article:Article,position: Int){
+        article.position = position
+        _openArticleEvent.value = Event(article)
+    }
+    fun onLike(position:Int){
+        _articles.value?.get(position)?.like   = !_articles.value?.get(position)?.like!!
+        _position.value = Event(position)
+    }
+    fun likeUpdate( article:Article,position:Int){
+        _articles.value?.get(position)?.like  = article.like
+        _position.value = Event(position)
     }
 }
