@@ -13,6 +13,7 @@ import com.shahjad.fabhotels.data.LoginRepository
 import com.shahjad.fabhotels.data.Result
 import com.shahjad.fabhotels.data.local.AppSharedPreference
 import com.shahjad.fabhotels.data.models.login.LoginModel
+import com.shahjad.fabhotels.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -47,8 +48,8 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
 //            View.VISIBLE
 //    }
 
-    private val _success = MutableLiveData<LoginModel?>()
-    val success : LiveData<LoginModel?> = _success
+    private val _success = MutableLiveData<Event<LoginModel?>>()
+    val success : LiveData<Event<LoginModel?>> = _success
 
     private val _msg = MutableLiveData<String>()
     val msg : LiveData<String> = _msg
@@ -100,7 +101,6 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         _isSubmitEnable.value = false
         Log.i(TAG, "loginAPiCall::userName:${email.value}, password:${password.value}")
          viewModelScope.launch {
-             delay(5000)
              val response = loginRepository.login()
              updateUi(response)
              _progressBar.value = View.GONE
@@ -114,7 +114,7 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
             is Result.Success->{
                 appSharedPreference.setUserToken(response.data.token)
                 appSharedPreference.setUserName(response.data.full_name)
-                _success.value = response.data
+                _success.value = Event(response.data)
             }
             is Result.Error->{
                 _msg.value = response.exception.message.toString()
@@ -122,10 +122,6 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         }
     }
 
-    private fun loginApiCall() {
-
-
-    }
 
     companion object{
         private const val TAG = "LoginViewModel"

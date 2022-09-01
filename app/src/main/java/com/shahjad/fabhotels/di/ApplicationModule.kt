@@ -6,10 +6,10 @@ import androidx.viewbinding.BuildConfig
 import com.shahjad.chatspace.util.Constants
 import com.shahjad.fabhotels.data.LoginDataSource
 import com.shahjad.fabhotels.data.LoginRepository
+import com.shahjad.fabhotels.data.NewsDataSource
+import com.shahjad.fabhotels.data.NewsRepository
 import com.shahjad.fabhotels.data.local.AppSharedPreference
-import com.shahjad.fabhotels.data.remote.ApiService
-import com.shahjad.fabhotels.data.remote.DefaultLoginRepository
-import com.shahjad.fabhotels.data.remote.RemoteLoginDataSource
+import com.shahjad.fabhotels.data.remote.*
 import com.shahjad.fabhotels.data.remote.Urls.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -71,6 +71,9 @@ class ApplicationModule {
             .client(okHttpClient)
             .build().create(ApiService::class.java)
 
+
+
+    ///login
     @Provides
     @Singleton
     fun provideLoginDataSoure(remoteLoginDataSource: RemoteLoginDataSource):LoginDataSource = remoteLoginDataSource
@@ -78,5 +81,16 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideLoginRepository(defaultLoginRepository: DefaultLoginRepository): LoginRepository = defaultLoginRepository
+
+
+    //news dependency provide
+    @Provides
+    @Singleton
+    fun provideRemoteNewsDataSoure(remoteNewsDataSource: RemoteNewsDataSource): NewsDataSource = remoteNewsDataSource
+
+    @Provides
+    @Singleton
+    fun provideDefaultNewsRepository(defaultNewsRepository: DefaultNewsRepository): NewsRepository = defaultNewsRepository
+
 
 }

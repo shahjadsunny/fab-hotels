@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.shahjad.fabhotels.databinding.FragmentLoginBinding
+import com.shahjad.fabhotels.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,10 +39,13 @@ class LoginFragment : Fragment() {
     }
 
     private fun onSuccess() {
-        viewModel.success.observe(viewLifecycleOwner) {
+        viewModel.success.observe(viewLifecycleOwner, EventObserver {
+
             Toast.makeText(requireContext(),it.toString(),Toast.LENGTH_SHORT).show()
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToNewsFragment())
             Log.i(TAG, "onSuccess: $it")
         }
+        )
 
     }
 
