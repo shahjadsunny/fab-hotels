@@ -1,5 +1,6 @@
 package com.shahjad.fabhotels.ui.login
 
+import android.content.SharedPreferences
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
@@ -8,12 +9,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
+import com.shahjad.fabhotels.data.LoginRepository
+import com.shahjad.fabhotels.data.Result
+import com.shahjad.fabhotels.data.local.AppSharedPreference
+import com.shahjad.fabhotels.data.models.login.LoginModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
+import javax.inject.Inject
 
-class LoginViewModel : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository,private val appSharedPreference: AppSharedPreference) : ViewModel() {
     val _email = MutableLiveData<String>()
     val email : LiveData<String> = _email
     private val _isEmailValid = MutableLiveData<Int>()
@@ -40,6 +46,9 @@ class LoginViewModel : ViewModel() {
 //        else
 //            View.VISIBLE
 //    }
+
+    private val _success = MutableLiveData<LoginModel?>()
+    val success : LiveData<LoginModel?> = _success
 
     private val _msg = MutableLiveData<String>()
     val msg : LiveData<String> = _msg
@@ -68,12 +77,13 @@ class LoginViewModel : ViewModel() {
             _isEmailValid.value = View.INVISIBLE
             password.value?.length?.let {
                 if (it>6){
-                    loginAPiCall()
+                    loginAuth()
                     _isPasswordValid.value = View.INVISIBLE
                     return
                 }
                 else{
                     _isPasswordValid.value = View.VISIBLE
+                    return
                 }
             }
             _isPasswordValid.value = View.VISIBLE
@@ -82,20 +92,39 @@ class LoginViewModel : ViewModel() {
         }else{
             _isEmailValid.value = View.VISIBLE
         }
-//        _isEmailValid.value = email.value!!.isNotEmpty()
-//        _msg.value = "userName:${email.value}, password:${password.value}"
 
     }
 
-    private fun loginAPiCall() {
+    private fun loginAuth() {
         _progressBar.value = View.VISIBLE
         _isSubmitEnable.value = false
         Log.i(TAG, "loginAPiCall::userName:${email.value}, password:${password.value}")
-         viewModelScope.launch(Dispatchers.Main) {
+         viewModelScope.launch {
              delay(5000)
+             val response = loginRepository.login()
+             updateUi(response)
              _progressBar.value = View.GONE
              _isSubmitEnable.value = true
          }
+    }
+
+    private fun updateUi(response: Result<LoginModel>) {
+
+        when(response){
+            is Result.Success->{
+                appSharedPreference.setUserToken(response.data.token)
+                appSharedPreference.setUserName(response.data.full_name)
+                _success.value = response.data
+            }
+            is Result.Error->{
+                _msg.value = response.exception.message.toString()
+            }
+        }
+    }
+
+    private fun loginApiCall() {
+
+
     }
 
     companion object{
