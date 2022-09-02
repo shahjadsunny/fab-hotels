@@ -73,7 +73,6 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     }
 
     fun submit(view: View){
-        Log.i(TAG, "submit::userName:${email.value}, password:${password.value}")
         if (isEmailValid(email.value)){
             _isEmailValid.value = View.INVISIBLE
             password.value?.length?.let {

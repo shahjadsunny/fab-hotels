@@ -17,14 +17,12 @@ class ArticleDetailViewModel : ViewModel() {
         private const val TAG = "ArticleDetailViewModel"
     }
     fun onLike(article:Article,mainActivityViewModel: MainActivityViewModel){
-        Log.i(TAG, "onLike:article:${article} ")
         article.like = !article.like
         _article.value = article
-        Log.i(TAG, "onLike:article update:${article} ")
         mainActivityViewModel._updateArticle.value = Event(article)
     }
 
-    fun showArticle(it: Article?) {
+    fun showArticleDetails(it: Article?) {
         it?.let {
             _article.value = it
         }

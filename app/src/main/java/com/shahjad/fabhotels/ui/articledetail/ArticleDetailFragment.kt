@@ -7,15 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.shahjad.fabhotels.MainActivityViewModel
 import com.shahjad.fabhotels.R
 import com.shahjad.fabhotels.databinding.FragmentArticleDetailBinding
-import com.shahjad.fabhotels.databinding.FragmentNewsBinding
 
 class ArticleDetailFragment : Fragment() {
 
-    private lateinit var mainActivityViewModel: MainActivityViewModel
+    private lateinit var mainActivitySharedViewModel: MainActivityViewModel
     private lateinit var viewModel: ArticleDetailViewModel
     private var _binding: FragmentArticleDetailBinding? = null
 
@@ -25,26 +26,45 @@ class ArticleDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(ArticleDetailViewModel::class.java)
-        mainActivityViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+        mainActivitySharedViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
         _binding = FragmentArticleDetailBinding.inflate(inflater, container, false).also {
             it.lifecycleOwner = this
             it.viewmodel = viewModel
-            it.mainActivityViewModel = mainActivityViewModel
+            it.mainActivityViewModel = mainActivitySharedViewModel
         }
-//
+        setToolbar()
         getDetailArticle()
         return binding.root
     }
 
+    private fun setToolbar() {
 
+        binding.toolbar.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.purple_500
+            )
+        )
+        val toolbar =  binding.toolbar.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        toolbar.title = getString(R.string.article_detail)
+        toolbar.setTitleTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
     private fun getDetailArticle() {
 
-        mainActivityViewModel.article.observe(viewLifecycleOwner) {
+        mainActivitySharedViewModel.article.observe(viewLifecycleOwner) {
             Log.i(TAG, "getDetailArticle:$it ")
-//            binding.article = it
-            viewModel.showArticle(it)
-//            viewModel.onLike(it,mainActivityViewModel )
-
+            viewModel.showArticleDetails(it)
         }
     }
 

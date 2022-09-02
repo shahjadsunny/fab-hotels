@@ -11,6 +11,14 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+<!--        <item name="textAppearanceLargePopupMenu">@color/black</item>-->
+<!--        <item name="android:textAppearanceSmallPopupMenu">@color/black</item>-->
+<!--        <item name="menu">@color/black</item>-->
+<!--        <item name="android:textColor">#ff000f</item>-->
+
+<!--        <item name="android:actionMenuTextColor">@color/black</item>-->
+
+
         <!-- Customize your theme here. -->
     </style>
 </resources>

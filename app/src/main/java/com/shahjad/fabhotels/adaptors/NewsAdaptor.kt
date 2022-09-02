@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shahjad.fabhotels.data.models.news.Article
 import com.shahjad.fabhotels.databinding.NewsArticleViewBinding
@@ -77,12 +76,4 @@ class TaskDiffCallback(private val oldList: List<Article>, private val newList: 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition] == newList[newItemPosition]
     }
-
-//    override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-//        return oldItem.title == newItem.title
-//    }
-//
-//    override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
-//        return oldItem == newItem
-//    }
 }
