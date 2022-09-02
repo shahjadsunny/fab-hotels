@@ -45,9 +45,20 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
     private fun getNews() {
         _progressBar.value = View.VISIBLE
         viewModelScope.launch {
-            val response = newsRepository.getNews()
-            updateUi(response)
-            _progressBar.value = View.GONE
+            kotlin.runCatching {
+                val response = newsRepository.getNews()
+                response
+            }.onSuccess {response->
+                updateUi(response)
+                _progressBar.value = View.GONE
+            }.onFailure {
+                _progressBar.value = View.GONE
+                _msg.value = it.message.toString()
+
+            }
+
+
+
         }
     }
 

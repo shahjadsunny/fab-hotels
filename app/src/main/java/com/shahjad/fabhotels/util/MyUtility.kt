@@ -11,15 +11,15 @@ import com.shahjad.fabhotels.R
 
 object MyUtility {
 
-//        fun showSnackbarMessage(viewShow: View, message: String?) {
-//            val mSnackBar = Snackbar.make(viewShow, message.toString(), Snackbar.LENGTH_LONG)
-////                .show()
-//
+        fun showSnackbarMessage(viewShow: View, message: String?) {
+            val mSnackBar = Snackbar.make(viewShow, message.toString(), Snackbar.LENGTH_LONG)
+//                .show()
+
 //            val tv = mSnackBar.view.findViewById(R.id.snackbar_text) as TextView
 //            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
-//
-//            mSnackBar.show()
-//        }
+
+            mSnackBar.show()
+        }
     fun imageSet(imageUrl: String, view: ImageView, drawable:Int) {
 
         Glide.with(view.context)

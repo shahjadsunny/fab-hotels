@@ -135,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/enter_password"
-                        android:text="@={viewmodel._password}"
+                        android:text="@={viewmodel.password}"
                         android:inputType="textPassword"
                         android:paddingTop="19dp"
                         android:paddingStart="21dp"
@@ -156,6 +156,7 @@
                         app:layout_constraintStart_toEndOf="@+id/editText_password"
                         android:layout_width="wrap_content"
                         android:text="@string/show"
+
                         android:textSize="12sp"
                         android:layout_height="0dp"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>

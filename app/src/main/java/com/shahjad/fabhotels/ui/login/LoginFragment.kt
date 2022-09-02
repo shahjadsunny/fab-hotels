@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.shahjad.fabhotels.databinding.FragmentLoginBinding
 import com.shahjad.fabhotels.util.EventObserver
+import com.shahjad.fabhotels.util.MyUtility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +31,7 @@ class LoginFragment : Fragment() {
             it.viewmodel = viewModel
         }
 
+
         onSuccess()
         showErrorMsg()
         return binding.root
@@ -38,9 +40,9 @@ class LoginFragment : Fragment() {
     private fun onSuccess() {
         viewModel.success.observe(viewLifecycleOwner, EventObserver {
 
-            Toast.makeText(requireContext(),it.toString(),Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(),it.toString(),Toast.LENGTH_SHORT).show()
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToNewsFragment())
-            Log.i(TAG, "onSuccess: $it")
+//            Log.i(TAG, "onSuccess: $it")
         }
         )
 
@@ -52,8 +54,9 @@ class LoginFragment : Fragment() {
     private fun showErrorMsg() {
 
         viewModel.msg.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            Log.i(TAG, "showMsg: $it")
+            MyUtility.showSnackbarMessage(binding.rootView,it)
+//            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+//            Log.i(TAG, "showMsg: $it")
         }
     }
 
